@@ -45,3 +45,26 @@ Scenario: One failing example of one function
     """
     When I run phptea with "basic-spec.php"
     Then it should fail
+
+Scenario: Nested describe blocks
+    Given "basic-spec.php" contains:
+    """
+    <?php
+    function add($a, $b) {
+        return $a + $b;
+    }
+    function assertEquals($a, $b) {
+        if ($a === $b) return;
+        throw new UnexpectedValueException("Expected $a to equal $b");
+    }
+
+    describe("add()", function() {
+        describe("2 and 2", function() {
+            it("should be 4", function() {
+                assertEquals(add(2, 2), 4);
+            });
+        });
+    });
+    """
+    When I run phptea with "basic-spec.php"
+    Then it should pass

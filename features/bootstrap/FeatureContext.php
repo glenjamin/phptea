@@ -7,6 +7,8 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
+require_once 'PHPUnit/Framework/Assert/Functions.php';
+
 define('BEHAT_ERROR_REPORTING', E_ALL);
 
 /**
@@ -20,6 +22,7 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
+        $this->debug = false;
         $this->dir = tempnam(sys_get_temp_dir(), 'phptea');
         // Tempnam creates a file, turn it into a directory
         unlink($this->dir);
@@ -33,6 +36,14 @@ class FeatureContext extends BehatContext
     {
         // Lazy way to clean up temp dir
         exec('rm -rf ' . $this->dir);
+    }
+
+    /**
+     * @BeforeScenario @debug
+     */
+    public function setDebug()
+    {
+        $this->debug = true;
     }
 
     /**
@@ -67,6 +78,7 @@ class FeatureContext extends BehatContext
 
         $this->stdout = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
+        $this->debug && print($this->stdout);
         $this->stderr = stream_get_contents($pipes[2]);
         fclose($pipes[2]);
         $this->retval = proc_close($proc);
@@ -77,11 +89,7 @@ class FeatureContext extends BehatContext
      */
     public function itShouldPass()
     {
-        if ($this->retval !== 0) {
-            throw new UnexpectedValueException(
-                "Non-zero return value received: " . $this->retval
-            );
-        }
+        assertSame(0, $this->retval, "Process returned non-zero exit code");
     }
 
     /**
@@ -89,11 +97,15 @@ class FeatureContext extends BehatContext
      */
     public function itShouldFail()
     {
-        if ($this->retval === 0) {
-            throw new UnexpectedValueException(
-                "Zero return value received, expected failure"
-            );
-        }
+        assertNotSame(0, $this->retval, "Process returned zero exit code");
+    }
+
+    /**
+     * @Then /^the output should be:$/
+     */
+    public function theOutputShouldBe(PyStringNode $string)
+    {
+        assertEquals((string) $string, $this->stdout);
     }
 
     /**
