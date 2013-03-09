@@ -1,0 +1,19 @@
+{
+    "name": "phptea/phptea",
+    "description": "A simple, flexible test harness for specifying tests in a SpecBDD style",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glen Mailer",
+            "email": "glenjamin@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "2.2.*",
+        "symfony/event-dispatcher": "2.2.*",
+        "symfony/finder": "2.2.*"
+    },
+    "require-dev": {
+        "behat/behat": "2.4.*@stable"
+    }
+}
