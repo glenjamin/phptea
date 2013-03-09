@@ -15,5 +15,13 @@
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable"
-    }
+    },
+
+    "autoload": {
+        "psr-0": {
+            "PHPTea\\PHPTea": "src/"
+        }
+    },
+
+    "bin": ["bin/phptea"]
 }

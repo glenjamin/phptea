@@ -101,7 +101,7 @@ class FeatureContext extends BehatContext
      */
     protected function getExecutable()
     {
-        return realpath(__DIR__ . '../../bin/phptea');
+        return realpath(__DIR__ . '/../../bin/phptea');
     }
 
     /**
