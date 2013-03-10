@@ -6,7 +6,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use PHPTea\PHPTea\Core;
+use PHPTea\PHPTea\Formatter;
 
 class RunCommand extends BaseCommand {
 
@@ -16,7 +19,8 @@ class RunCommand extends BaseCommand {
             ->setDescription('Run tests')
             ->addArgument(
                 'files',
-                InputArgument::IS_ARRAY
+                InputArgument::IS_ARRAY,
+                "Optional list of files to include in test run"
             )
         ;
     }
@@ -24,7 +28,9 @@ class RunCommand extends BaseCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $runner = Core::newRunner();
         $runner->loadFiles($input->getArgument('files'));
-        return $runner->run();
+        $progress = new EventDispatcher();
+        $progress->addSubscriber(new Formatter\Documentation());
+        return $runner->run($progress);
     }
 
 }

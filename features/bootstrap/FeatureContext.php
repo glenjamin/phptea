@@ -105,7 +105,12 @@ class FeatureContext extends BehatContext
      */
     public function theOutputShouldBe(PyStringNode $string)
     {
-        assertEquals((string) $string, $this->stdout);
+        try {
+            assertEquals((string) $string, $this->stdout);
+        } catch (Exception $ex) {
+            $msg = PHPUnit_Framework_TestFailure::exceptionToString($ex);
+            throw new Exception($msg, $ex->getCode(), $ex);
+        }
     }
 
     /**

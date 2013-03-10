@@ -1,0 +1,45 @@
+Refactoring
+-----------
+
+Break apart Core.php - it has too many responsibilities
+    - Builder
+    - Runner (this can be the event dispatcher)
+    - Top level example collection
+
+Relegate example / example group to containers only
+    - Pull out the execution logic into a runner class
+
+Tidy up command-line runner
+    - help text
+
+Move actual application logic out of RunCommand
+
+Short Term
+----------
+colour
+pending tests
+beforeEach / afterEach
+TeaCup - context object
+
+Short-ish Term
+--------------
+--grep
+--halt-on-fail
+Glob for test files
+describe(!"desc") & it("!test") for quick disabling
+
+Medium Term
+-----------
+Test timings
+Improve formatters & add more
+Figure out how to self-test
+Config format
+
+Longer Term
+-----------
+Code coverage
+Global variable leak detection
+Sugars - standardised way to plug-in extra functionality
+    - assertions
+    - mocking
+    - growl

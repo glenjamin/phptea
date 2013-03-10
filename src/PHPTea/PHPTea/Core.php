@@ -2,6 +2,8 @@
 
 namespace PHPTea\PHPTea;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 class Core extends ExampleCollection
 {
     const VERSION = '0.1.0';
@@ -53,6 +55,14 @@ class Core extends ExampleCollection
         foreach($files as $file) {
             include $file;
         }
+    }
+
+    public function run(EventDispatcher $progess)
+    {
+        $progess->dispatch(Event::SUITE_START);
+        $result = parent::run($progess);
+        $progess->dispatch(Event::SUITE_ENDED);
+        return $result;
     }
 
     protected function append($child)

@@ -46,5 +46,6 @@ Scenario: Passing and Failing tests
         ✓ should get -9 from -4 and -5
       floating point
         ✗ should get 2.5 from 1.1 and 1.4
+
     """
 
